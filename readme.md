@@ -1,106 +1,66 @@
-# BidNow
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-BidNow est une plateforme web de commerce électronique basée sur le principe des enchères en ligne.  
-Elle permet aux vendeurs de proposer des produits via des enchères sécurisées et aux acheteurs de participer à des mises équitables, tout en garantissant la transparence, la sécurité des paiements et une gestion automatisée du cycle de vente.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
----
+## About Laravel
 
-##  Contexte du projet
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-Ce projet a été réalisé dans le cadre du **Projet Fil Rouge**.  
-Il vise à mettre en pratique les compétences acquises en développement web (front-end et back-end) à travers la conception d’un système complet intégrant des règles métier, une gestion du temps, et une logique transactionnelle avancée.
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
----
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-##  Objectifs du projet
+## Learning Laravel
 
-### Objectif général
-Développer une plateforme d’enchères en ligne fiable, sécurisée et automatisée, permettant de gérer l’ensemble du cycle de vente.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-### Objectifs spécifiques
-- Permettre aux vendeurs de proposer des produits via des enchères
-- Offrir aux acheteurs un environnement de mise équitable et compétitif
-- Automatiser la validation des ventes selon des règles métier précises
-- Sécuriser les paiements et les livraisons
-- Développer une application web moderne, responsive et maintenable
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
----
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-##  Acteurs du système
+## Laravel Sponsors
 
-- **Acheteur** : consulte les enchères, effectue des mises et paie les produits gagnés
-- **Vendeur** : publie des produits, configure les enchères et expédie les articles vendus
-- **Administrateur** : supervise la plateforme, gère les utilisateurs et contrôle les transactions
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
----
+### Premium Partners
 
-##  Fonctionnalités principales
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
-###  Gestion des utilisateurs
-- Inscription et authentification sécurisées
-- Gestion des rôles (acheteur, vendeur, administrateur)
-- Gestion du profil utilisateur
+## Contributing
 
-###  Gestion des produits
-- Création, modification et suppression de produits
-- Association des produits à des enchères
-- Gestion des catégories
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### ⏱ Système d’enchères
-- Définition d’un prix de départ (visible)
-- Définition d’un prix de réserve (confidentiel)
-- Gestion de la durée des enchères
-- Clôture automatique à la fin du délai
-- Détermination automatique de la meilleure offre
+## Code of Conduct
 
-###  Validation de la vente
-- Si le prix final atteint ou dépasse le prix de réserve → vente validée automatiquement
-- Si le prix final est inférieur au prix de réserve → le vendeur peut accepter ou refuser la vente
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-###  Paiement sécurisé (Escrow)
-- Paiement effectué par l’acheteur sous 24h
-- Les fonds sont versés à la plateforme
-- Conservation temporaire des fonds via un système d’entiercement (escrow)
+## Security Vulnerabilities
 
-###  Expédition et transfert des fonds
-- Le vendeur confirme l’expédition du produit
-- Tant que l’expédition n’est pas confirmée, aucun paiement n’est versé au vendeur
-- Après confirmation (et/ou réception), les fonds sont transférés au vendeur
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-###  Administration
-- Tableau de bord administrateur
-- Gestion des utilisateurs et des enchères
-- Supervision des ventes et des paiements
-- Accès aux prix de réserve
-- Gestion des litiges
+## License
 
----
-
-##  Règles métier principales
-
-- Une enchère possède une durée limitée
-- Le prix de réserve est strictement confidentiel
-- La validation de la vente dépend du prix atteint
-- Le paiement doit être effectué dans un délai de 24 heures
-- Les fonds sont sécurisés jusqu’à confirmation de l’expédition
-
----
-
-##  Contraintes techniques
-
-- Architecture MVC
-- Base de données relationnelle
-- Code structuré, commenté et maintenable
-- Sécurisation des accès et des transactions
-- Application responsive
-
----
-
-##  Évolutions possibles
-
-- Mise automatique (auto-bid)
-- Assistant intelligent pour la suggestion des prix
-- Intégration d’un système de paiement en ligne réel
-- Développement d’une application mobile
-
----
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
