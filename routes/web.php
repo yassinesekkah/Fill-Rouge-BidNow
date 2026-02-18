@@ -17,4 +17,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'role:seller'])->group(function () {
+    Route::get('/seller/dashboard', function () {
+        return 'Seller Dashboard';
+    });
+     Route::get('/seller-test', function () {
+        return 'Welcome Seller';
+    });
+});
+
+
+Route::middleware(['auth', 'role:buyer'])->group(function () {
+    //
+});
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    //
+});
+
 require __DIR__.'/auth.php';
