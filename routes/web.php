@@ -28,13 +28,6 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'role:buyer'])->group(function () {
-    //
-});
 
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    //
-});
 
 require __DIR__.'/auth.php';

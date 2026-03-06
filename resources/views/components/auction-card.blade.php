@@ -1,4 +1,4 @@
-    @props(['product'])
+    {{-- @props(['product'])
 
 <div class="bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl transition">
 
@@ -24,4 +24,4 @@
         </a>
     </div>
 
-</div>
+</div> --}}
