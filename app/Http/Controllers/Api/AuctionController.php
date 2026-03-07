@@ -8,7 +8,17 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 
 class AuctionController extends Controller
-{
+{   
+    public function index()
+    {
+        $auctions = Auction::with('product')
+                            ->where('status', 'active')
+                            ->get();
+        
+        return response()->json($auctions);
+    }
+
+    
     public function store(Request $request, $id)
     {   
         $user = auth()->user();

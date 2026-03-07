@@ -33,7 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 });
 
-////===> Product Routes <====\\\\
+////===> Auction Routes <====\\\\
+Route::get('/auctions', [AuctionController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/products/{id}/auction', [AuctionController::class, 'store']);
