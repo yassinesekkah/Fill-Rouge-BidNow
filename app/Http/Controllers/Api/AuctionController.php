@@ -18,7 +18,15 @@ class AuctionController extends Controller
         return response()->json($auctions);
     }
 
-    
+
+    public function show($id)
+    {
+        $auction = Auction::with(['product', 'bids'])->findOrFail($id);
+        
+        return response()->json($auction);
+    }
+
+
     public function store(Request $request, $id)
     {   
         $user = auth()->user();
