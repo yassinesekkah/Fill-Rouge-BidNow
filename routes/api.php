@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 ////===> Auction Routes <====\\\\
 Route::get('/auctions', [AuctionController::class, 'index']);
+Route::get('/auctions/{id}', [AuctionController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
