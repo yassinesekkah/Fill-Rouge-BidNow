@@ -26,6 +26,12 @@ class CloseExpiredAuctions extends Command
      */
     public function handle()
     {
+        ///start auction
+        Auction::where('status', 'pending')
+                ->where('start_date', '<=', now())
+                ->update(['status' => 'active']);
+
+        ///close auction
         $auctions = Auction::where('status', 'active')
             ->where('end_date', '<=', now())
             ->get();
