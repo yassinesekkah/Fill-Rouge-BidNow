@@ -23,7 +23,10 @@ class AuctionController extends Controller
     {
         $auction = Auction::with(['product', 'bids'])->findOrFail($id);
         
-        return response()->json($auction);
+        return response()->json([
+            'auction' => $auction,
+            'remaining_time' => $auction->remainingTime()
+        ]);
     }
 
 
@@ -36,6 +39,12 @@ class AuctionController extends Controller
             return response()->json([
                 'message' => 'Unauthorized'
             ], 403);
+        }
+
+        if($product->auction){
+            return response()->json([
+                'message' => 'This product already has an auction'
+            ], 400);
         }
 
         $validated = $request->validate([

@@ -25,6 +25,12 @@ class Auction extends Model
     }
 
 
+    public function winner()
+    {
+        return $this->belongsTo(User::class, 'winner_id');
+    }
+
+
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
@@ -49,6 +55,15 @@ class Auction extends Model
     }
 
 
+    public function updateHighestBid($amount)
+    {
+        if ($this->current_highest_bid === null || $amount > $this->current_highest_bid) {
+            $this->current_highest_bid = $amount;
+            $this->save();
+        }
+    }
+
+
     public function hasEnded()
     {
         return now()->greaterThan($this->end_date);
@@ -70,9 +85,15 @@ class Auction extends Model
         return $this->status === 'pending';
     }
 
-    
+
     public function isEnded()
     {
         return $this->status === 'ended';
+    }
+
+
+    public function remainingTime()
+    {
+        return (int) now()->diffInSeconds($this->end_date, false);
     }
 }
