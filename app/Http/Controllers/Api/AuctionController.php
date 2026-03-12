@@ -71,4 +71,26 @@ class AuctionController extends Controller
 
         return response()->json($auction);
     }
+
+
+    public function accept(Auction $auction)
+    {
+        $user = auth()->user();
+
+        if($auction->status !== 'awaiting_seller'){
+            abort(403, 'Auction is not awaiting seller decision.');
+        }
+
+        if($user->id !== $auction->product->user_id){
+            abort(403, 'Only the seller can accept the offer.');
+        }
+
+        $auction->status = 'sold';
+        $auction->save();
+
+        return response()->json([
+            'message' => 'Offer accepted successfully.',
+            'auction' => $auction
+        ]);
+    }
 }
