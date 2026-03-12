@@ -41,4 +41,15 @@ class BidController extends Controller
 
         return response()->json($bids);
     }
+
+
+    public function highestBid(Auction $auction)
+    {
+        $bid = $auction->bids()
+                        ->with('user')
+                        ->latest()
+                        ->first();
+
+        return response()->json($bid);
+    }
 }
