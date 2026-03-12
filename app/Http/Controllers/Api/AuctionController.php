@@ -8,40 +8,47 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 
 class AuctionController extends Controller
-{   
+{
     public function index()
     {
         $auctions = Auction::with('product')
-                            ->where('status', 'active')
-                            ->get();
-        
+            ->where('status', 'active')
+            ->get();
+
         return response()->json($auctions);
     }
 
 
     public function show($id)
     {
-        $auction = Auction::with(['product', 'bids'])->findOrFail($id);
-        
+        $auction = Auction::with(['product'])->findOrFail($id);
+
+        $latestBids = $auction->bids()
+            ->with('user:id,name')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return response()->json([
             'auction' => $auction,
-            'remaining_time' => $auction->remainingTime()
+            'remaining_time' => $auction->remainingTime(),
+            'latest_bids' => $latestBids
         ]);
     }
 
 
     public function store(Request $request, $id)
-    {   
+    {
         $user = auth()->user();
         $product = Product::findOrFail($id);
 
-        if($product->user_id !== $user->id){
+        if ($product->user_id !== $user->id) {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 403);
         }
 
-        if($product->auction){
+        if ($product->auction) {
             return response()->json([
                 'message' => 'This product already has an auction'
             ], 400);
