@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 ////===> bid Routes <====\\\\
 Route::get('/auctions/{auction}/bids', [BidController::class, 'index']);
+Route::get('/auctions/{auction}/highest-bid', [BidController::class, 'highestBid']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
