@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuctionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BidController;
 use Illuminate\Http\Request;
 
 Route::get('/test', function () {
@@ -40,5 +41,14 @@ Route::get('/auctions/{id}', [AuctionController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/products/{id}/auction', [AuctionController::class, 'store']);
+
+});
+
+////===> bid Routes <====\\\\
+Route::get('/auctions/{auction}/bids', [BidController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/auctions/{auction}/bids', [BidController::class, 'store']);
 
 });

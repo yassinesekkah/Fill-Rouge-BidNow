@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class Auction extends Model
 {
@@ -45,13 +47,14 @@ class Auction extends Model
 
     public function isActive()
     {
-        return now()->between($this->start_date, $this->end_date);
+        return $this->status === 'active'
+            && now()->between($this->start_date, $this->end_date);
     }
 
 
     public function highestBid()
     {
-        return $this->bids()->max('amount') ?? $this->starting_price;
+        return $this->current_highest_bid ?? $this->starting_price;
     }
 
 
@@ -95,5 +98,50 @@ class Auction extends Model
     public function remainingTime()
     {
         return (int) now()->diffInSeconds($this->end_date, false);
+    }
+
+
+    public function placeBid(User $user, $amount)
+    {
+        return DB::transaction(function () use ($user, $amount) {
+
+            // lock auction row
+            $auction = Auction::where('id', $this->id)
+                ->lockForUpdate()
+                ->first();
+
+            // check auction active
+            if (!$auction->isActive()) {
+                abort(422, 'Auction is not active.');
+            }
+
+            // check seller cannot bid
+            if ($user->id === $auction->product->user_id) {
+                abort(403, 'You cannot place a bid on your own product.');
+            }
+
+            // determine minimum bid
+            if ($auction->current_highest_bid === null) {
+                $minimumBid = $auction->starting_price;
+            } else {
+                $minimumBid = $auction->highestBid() + 2;
+            }
+
+            // check bid amount
+            if ($amount < $minimumBid) {
+                abort(422, "Bid must be at least {$minimumBid}$.");
+            }
+
+            // create bid
+            $bid = $auction->bids()->create([
+                'user_id' => $user->id,
+                'amount' => $amount
+            ]);
+
+            // update highest bid
+            $auction->updateHighestBid($amount);
+
+            return $bid;
+        });
     }
 }
