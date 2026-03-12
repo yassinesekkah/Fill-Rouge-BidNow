@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/products/{id}/auction', [AuctionController::class, 'store']);
     Route::post('/auctions/{auction}/accept', [AuctionController::class, 'accept']);
+    Route::post('/auctions/{auction}/reject', [AuctionController::class, 'reject']);
 
 });
 
