@@ -115,4 +115,5 @@ class AuctionController extends Controller
             'auction' => $auction
         ]);
     }
+    
 }
