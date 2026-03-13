@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BidController;
+use App\Http\Controllers\api\ReviewController;
 use Illuminate\Http\Request;
 
 Route::get('/test', function () {
@@ -43,7 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products/{id}/auction', [AuctionController::class, 'store']);
     Route::post('/auctions/{auction}/accept', [AuctionController::class, 'accept']);
     Route::post('/auctions/{auction}/reject', [AuctionController::class, 'reject']);
-
 });
 
 ////===> bid Routes <====\\\\
@@ -53,5 +53,11 @@ Route::get('/auctions/{auction}/highest-bid', [BidController::class, 'highestBid
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/auctions/{auction}/bids', [BidController::class, 'store']);
+});
 
+////===> Review Routes <====\\\\
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/auctions/{auction}/review', [ReviewController::class, 'store']);
 });
