@@ -15,13 +15,22 @@ class Product extends Model
         'user_id',
     ];
 
+    protected $appends = ['image_url'];
+
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User:: class);
+        return $this->belongsTo(User::class);
     }
 
     public function auction(): HasOne
     {
         return $this->hasOne(Auction::class);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset('storage/' . $this->image)
+            : null;
     }
 }

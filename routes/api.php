@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 ////===> Review Routes <====\\\\
+Route::get('/users/{user}/reviews', [ReviewController::class, 'userReviews']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
