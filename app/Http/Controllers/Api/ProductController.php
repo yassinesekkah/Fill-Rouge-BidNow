@@ -27,13 +27,19 @@ class ProductController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|string'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
+
+        $imagePath = null;
+
+        if($request->hasFile('image')){
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         $product = Product::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image' => $validated['image'] ?? null,
+            'image' => $imagePath,
             'user_id' => auth()->id()
         ]);
 
