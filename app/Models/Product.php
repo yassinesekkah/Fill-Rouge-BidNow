@@ -27,6 +27,11 @@ class Product extends Model
         return $this->hasOne(Auction::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return $this->image

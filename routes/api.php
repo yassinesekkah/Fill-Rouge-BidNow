@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BidController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\ReviewController;
 use Illuminate\Http\Request;
 
@@ -61,4 +62,15 @@ Route::get('/users/{user}/reviews', [ReviewController::class, 'userReviews']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/auctions/{auction}/review', [ReviewController::class, 'store']);
+});
+
+////===> Review Routes <====\\\\
+Route::get('/categories', [CategoryController::class, 'index']);
+
+Route::middleware('auth:sanctum', 'role:admin')->group(function () {
+
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
 });
