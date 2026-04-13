@@ -5,12 +5,13 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     public function store(Auction $auction, Request $request)
-    {   
+    {
         ///check the status if sold
         if ($auction->status !== 'sold') {
             abort(403, 'Reviews are allowed only after the auction is sold.');
@@ -34,7 +35,7 @@ class ReviewController extends Controller
             abort(403, 'You have already submitted a review for this auction.');
         }
 
-        $reviewedUser = $user->id === $buyerId ? $sellerId: $buyerId;
+        $reviewedUser = $user->id === $buyerId ? $sellerId : $buyerId;
 
         ///validate inputs
         $validated = $request->validate([
@@ -57,5 +58,26 @@ class ReviewController extends Controller
             'message' => 'Review submitted successfully.',
             'review' => $review
         ], 201);
+    }
+
+
+    public function userReviews(User $user)
+    {
+        $reviews = Review::where('reviewed_user_id', $user->id)
+            ->with('user:id,name')
+            ->latest()
+            ->paginate(10);
+
+        $averageRating = Review::where('reviewed_user_id', $user->id)
+            ->avg('rating');
+
+        $reviewsCount = Review::where('reviewed_user_id', $user->id)
+            ->count();
+
+        return response()->json([
+            'average_rating' => round($averageRating, 1),
+            'reviews_count' => $reviewsCount,
+            'reviews' => $reviews
+        ]);
     }
 }
