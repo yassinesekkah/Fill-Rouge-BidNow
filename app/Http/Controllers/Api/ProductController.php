@@ -28,12 +28,14 @@ class ProductController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'category_id' => 'required|exists:categories,id',
+
         ]);
 
         $imagePath = null;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
@@ -41,7 +43,8 @@ class ProductController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'image' => $imagePath,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'category_id' => $request->category_id,
         ]);
 
         return response()->json([
@@ -80,8 +83,14 @@ class ProductController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
-            'image' => 'nullable|string'
+            'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->image = $path;
+        }
 
         // update product
         $product->update($validated);
@@ -90,7 +99,6 @@ class ProductController extends Controller
             'message' => 'Product updated successfully',
             'product' => $product
         ]);
-
     }
 
     /**
@@ -102,7 +110,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         // check if product belongs to authenticated user
-        if($product->user_id !== $user->id){
+        if ($product->user_id !== $user->id) {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 403);
@@ -118,9 +126,9 @@ class ProductController extends Controller
     public function myProducts(Request $request)
     {
         return $request->user()
-                    ->products()
-                    ->with('Category')
-                    ->latest()
-                    ->get();
+            ->products()
+            ->with('Category')
+            ->latest()
+            ->get();
     }
 }
