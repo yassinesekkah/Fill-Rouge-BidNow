@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -112,5 +113,14 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Product deleted successfully'
         ]);
+    }
+
+    public function myProducts(Request $request)
+    {
+        return $request->user()
+                    ->products()
+                    ->with('Category')
+                    ->latest()
+                    ->get();
     }
 }
