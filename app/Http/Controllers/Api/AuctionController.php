@@ -9,11 +9,18 @@ use Illuminate\Http\Request;
 
 class AuctionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $auctions = Auction::with('product')
-            ->where('status', 'active')
-            ->get();
+        $query = Auction::with('product')
+            ->where('status', 'active');
+
+        if ($request->category_id) {
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('category_id', $request->category_id);
+            });
+        }
+
+        $auctions = $query->latest()->get();
 
         return response()->json($auctions);
     }
@@ -115,5 +122,4 @@ class AuctionController extends Controller
             'auction' => $auction
         ]);
     }
-    
 }
