@@ -14,15 +14,23 @@ class AuctionController extends Controller
         $query = Auction::with('product')
             ->where('status', 'active');
 
+        // Filter by category
         if ($request->category_id) {
             $query->whereHas('product', function ($q) use ($request) {
                 $q->where('category_id', $request->category_id);
             });
         }
 
-        $auctions = $query->latest()->get();
+       
+        if ($request->search) {
+            $search = $request->search;
 
-        return response()->json($auctions);
+            $query->whereHas('product', function ($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%");
+            });
+        }
+
+        return response()->json($query->latest()->get());
     }
 
 
