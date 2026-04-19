@@ -30,7 +30,7 @@ class AuctionController extends Controller
             });
         }
 
-        return response()->json($query->latest()->get());
+        return response()->json($query->latest()->paginate(8));
     }
 
 
