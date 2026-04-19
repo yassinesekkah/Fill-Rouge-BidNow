@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BidController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\ReviewController;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 Route::get('/test', function () {
@@ -56,6 +57,12 @@ Route::get('/auctions/{auction}/highest-bid', [BidController::class, 'highestBid
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/auctions/{auction}/bids', [BidController::class, 'store']);
+    Route::get('/my-bids', [BidController::class, 'myBids']);
+});
+
+////===> bid Routes <====\\\\
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [Notification::class, 'index']);
 });
 
 ////===> Review Routes <====\\\\
@@ -74,5 +81,4 @@ Route::middleware('auth:sanctum', 'role:admin')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
-
 });
