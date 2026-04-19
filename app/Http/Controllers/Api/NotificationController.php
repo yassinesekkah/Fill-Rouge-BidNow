@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    public function index(Request $request)
+    {
+        return $request->user()->notifications()->latest()->get();
+    }
+
     public static function createNotification($user_id, $type, $message)
     {
         Notification::create([
