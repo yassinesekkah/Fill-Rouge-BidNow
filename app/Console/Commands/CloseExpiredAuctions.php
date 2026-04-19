@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Api\NotificationController;
 use App\Models\Auction;
 use Illuminate\Console\Command;
 
@@ -28,8 +29,8 @@ class CloseExpiredAuctions extends Command
     {
         ///start auction
         Auction::where('status', 'pending')
-                ->where('start_date', '<=', now())
-                ->update(['status' => 'active']);
+            ->where('start_date', '<=', now())
+            ->update(['status' => 'active']);
 
         ///close auction
         $auctions = Auction::where('status', 'active')
@@ -44,10 +45,23 @@ class CloseExpiredAuctions extends Command
 
                 $auction->status = 'sold';
                 $auction->winner_id = $highestBid->user_id;
+
+                NotificationController::createNotification(
+                    $highestBid->user_id,
+                    'won',
+                    'You won the auction for ' . $auction->product->title
+                );
             } elseif ($highestBid) {
 
                 $auction->status = 'awaiting_seller';
                 $auction->winner_id = $highestBid->user_id;
+
+                NotificationController::createNotification(
+                    $highestBid->user_id,
+                    'pending',
+                    'You are the highest bidder for ' . $auction->product->title . ', waiting seller confirmation'
+                );
+                
             } else {
 
                 $auction->status = 'ended';
