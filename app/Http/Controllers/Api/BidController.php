@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
 use Illuminate\Http\Request;
+use App\Http\Controllers\NotificationController;
 
 class BidController extends Controller
 {
@@ -22,20 +24,24 @@ class BidController extends Controller
         //get user
         $user = auth()->user();
 
-        //call auction model for place bid
-        $bid = $auction->placeBid($user, $validated['amount']);
-        $bid->load('user');
-
+        //get the preview highst bid
         $previousHighest = Bid::where('auction_id', $auction->id)
             ->latest()
             ->first();
 
+        //call auction model for place bid
+        $bid = $auction->placeBid($user, $validated['amount']);
+        $bid->load('user');
+
+
+
         if ($previousHighest && $previousHighest->user_id !== auth()->id()) {
-            NotificationController::createNotification(
+            ApiNotificationController::createNotification(
                 $previousHighest->user_id,
                 'outbid',
                 'Someone outbid you on ' . $auction->product->title
             );
+            
         }
 
         return response()->json([
