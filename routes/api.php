@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BidController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\api\ReviewController;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 ////===> bid Routes <====\\\\
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/notifications', [Notification::class, 'index']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
 });
 
 ////===> Review Routes <====\\\\
