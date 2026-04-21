@@ -49,7 +49,8 @@ class CloseExpiredAuctions extends Command
                 NotificationController::createNotification(
                     $highestBid->user_id,
                     'won',
-                    'You won the auction for ' . $auction->product->title
+                    'You won the auction for ' . $auction->product->title,
+                    $auction->id
                 );
             } elseif ($highestBid) {
 
@@ -59,9 +60,10 @@ class CloseExpiredAuctions extends Command
                 NotificationController::createNotification(
                     $highestBid->user_id,
                     'pending',
-                    'You are the highest bidder for ' . $auction->product->title . ', waiting seller confirmation'
+                    'You are the highest bidder for ' . $auction->product->title . ', waiting seller confirmation',
+                    $auction->id
                 );
-                
+
             } else {
 
                 $auction->status = 'ended';

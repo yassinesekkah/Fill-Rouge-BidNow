@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
 ////===> bid Routes <====\\\\
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'read']);
 });
 
 ////===> Review Routes <====\\\\

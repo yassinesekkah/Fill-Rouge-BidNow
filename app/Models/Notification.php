@@ -12,6 +12,7 @@ class Notification extends Model
         'type',
         'message',
         'is_read',
+        'auction_id'
     ];
 
     public function user(): BelongsTo

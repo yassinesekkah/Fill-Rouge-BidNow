@@ -13,35 +13,34 @@ class BidController extends Controller
 {
     public function store(Request $request, $auctionId)
     {
-        //validate input
         $validated = $request->validate([
             'amount' => 'required|numeric|min:1',
         ]);
 
-        //get auction
         $auction = Auction::findOrFail($auctionId);
-
-        //get user
         $user = auth()->user();
 
-        //get the preview highst bid
+        // highst previous bid
         $previousHighest = Bid::where('auction_id', $auction->id)
-            ->latest()
+            ->orderBy('amount', 'desc')
             ->first();
 
-        //call auction model for place bid
+        // create bid
         $bid = $auction->placeBid($user, $validated['amount']);
         $bid->load('user');
 
-
-
-        if ($previousHighest && $previousHighest->user_id !== auth()->id()) {
+        // notification
+        if (
+            $previousHighest &&
+            $previousHighest->user_id !== $user->id &&
+            $validated['amount'] > $previousHighest->amount
+        ) {
             ApiNotificationController::createNotification(
                 $previousHighest->user_id,
                 'outbid',
-                'Someone outbid you on ' . $auction->product->title
+                'Someone outbid you on ' . $auction->product->title,
+                $auction->id
             );
-            
         }
 
         return response()->json([
@@ -49,7 +48,6 @@ class BidController extends Controller
             'bid' => $bid
         ], 201);
     }
-
 
     public function index(Auction $auction)
     {
